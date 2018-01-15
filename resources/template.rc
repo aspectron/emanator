@@ -1,0 +1,34 @@
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+
+1 GOOGLEUPDATEAPPLICATIONCOMMANDS "google-app.bin"
+
+1 VERSIONINFO
+FILEVERSION 0,0,0,0
+PRODUCTVERSION 0,0,0,0
+FILEOS 0x4
+FILETYPE 0x1
+{
+BLOCK "StringFileInfo"
+{
+	BLOCK "040904b0"
+	{
+		VALUE "CompanyName", "<%- author %>.com"
+		VALUE "FileDescription", "<%- ident %>"
+		VALUE "InternalName", "<%- ident %>_exe"
+		VALUE "LegalCopyright", "<%- `Copyright ${(new Date()).getFullYear()} ${options.author}`  %>. All rights reserved."
+		VALUE "OriginalFilename", "<%- ident %>.exe"
+		VALUE "ProductName", "<%- ident %>"
+		VALUE "CompanyShortName", "<%- options.author %>"
+		VALUE "ProductShortName", "<%- ident %>"
+		VALUE "LastChange", "f854061966c3acbf60eb0bbf02e93caa18652279"
+	}
+}
+
+BLOCK "VarFileInfo"
+{
+	VALUE "Translation", 0x0409 0x04B0  
+}
+}
+
+1 Manifest "manifest.bin"
+
