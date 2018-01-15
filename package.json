@@ -21,9 +21,11 @@
     "gulp-util": "^3.0.7",
     "is-root": "^1.0.0",
     "mkdirp": "^0.5.1",
+    "plugin-error": "^1.0.0",
     "request": "^2.81.0",
     "request-progress": "^3.0.0",
     "semver": "^5.4.1",
+    "through2": "^2.0.3",
     "underscore": "^1.8.3"
   }
 }
