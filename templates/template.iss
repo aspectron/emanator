@@ -61,10 +61,35 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
-<% if(options.fw) { %>
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<%- title %>"" program=""{app}\{#MyAppExeName}"" dir=in action=allow enable=yes"; Flags: runhidden;
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<%- title %>"" program=""{app}\{#MyAppExeName}"" dir=out action=allow enable=yes"; Flags: runhidden;
-<% } %>
+<% 
+
+var fwList = { }
+
+_.each(options.fw, (v,k) => {
+  switch(k) {
+    case "App": {
+      fwList[title] = "{#MyAppExeName}"; 
+    } break;
+
+    case "µFabric":
+    case "MicroFabric": {
+       fwList[title+' NATS'] = "node_modules\\micro-fabric\\bin\\windows\\nats\\gnatsd.exe"; 
+       fwList[title+' STAN' ] = "node_modules\\micro-fabric\\bin\\windows\\stan\\nats-streaming-server.exe"; 
+    } break;
+
+    default: {
+        fwList[k] = v;
+    } break;
+  }
+})
+
+_.each(fwList, (v,k) => {
+%>
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<%- k %>"" program=""{app}\<%- v %>"" dir=in action=allow enable=yes"; Flags: runhidden;
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<%- k %>"" program=""{app}\<%- v %>"" dir=out action=allow enable=yes"; Flags: runhidden;
+<%
+}) 
+%>
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall
 
 [Files]
