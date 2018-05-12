@@ -2,6 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "<%- title %>"
+#define MyAppGroup "<%- group %>"
 #define MyAppVersion "<%- package.version %>"
 #define MyAppPublisher "<%- author %>"
 #define MyAppURL "<%- url %>"
@@ -19,7 +20,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf64}\Scanz
+DefaultDirName={pf64}\{#MyAppGroup}\{#MyAppName}
 DisableDirPage=yes
 UsePreviousAppDir=no
 OutputBaseFilename=<%- ident %>-windows-<%- package.version %><%= suffix %>
@@ -68,7 +69,7 @@ var fwList = { }
 _.each(options.fw, (v,k) => {
   switch(k) {
     case "App": {
-      fwList[title] = "{#MyAppExeName}"; 
+      fwList[title+' App'] = "{#MyAppExeName}"; 
     } break;
 
     case "µFabric":
@@ -137,4 +138,15 @@ Filename: "{app}\package.nw\lib.exe"; Parameters: "/s /y"; StatusMsg: "Installin
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\package.nw\node_modules"
 Type: filesandordirs; Name: "{app}\package.nw\lib"
+<% } %>
+
+[Registry]
+<% if(options.autostart == 'registry:user') { %>
+;current user only
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "<%- title %>"; ValueData: """{app}\<%- ident %>.exe"""; Flags: uninsdeletevalue
+<%
+} else  if(options.autostart == 'registry:everyone') { 
+%>
+;any user
+Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "<%- title %>"; ValueData: """{app}\<%- ident %>.exe"""; Flags: uninsdeletevalue
 <% } %>
