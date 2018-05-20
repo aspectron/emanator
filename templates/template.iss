@@ -74,8 +74,8 @@ _.each(options.fw, (v,k) => {
 
     case "µFabric":
     case "MicroFabric": {
-       fwList[title+' NATS'] = "node_modules\\micro-fabric\\bin\\windows\\nats\\gnatsd.exe"; 
-       fwList[title+' STAN' ] = "node_modules\\micro-fabric\\bin\\windows\\stan\\nats-streaming-server.exe"; 
+       fwList[title+' NATS'] = "package.nw\\node_modules\\micro-fabric\\bin\\windows\\nats\\gnatsd.exe"; 
+       fwList[title+' STAN' ] = "package.nw\\node_modules\\micro-fabric\\bin\\windows\\stan\\nats-streaming-server.exe"; 
     } break;
 
     default: {
