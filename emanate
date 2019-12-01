@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const vm = require('vm');
+const events = require('events');
+const path = require('path');
+const cli = require('commander')
+const _module_ = require('module');
+
+const pkg = require('./package');
+const Emanator = require('./emanator');
+class Emanate extends events.EventEmitter {
+	constructor() {
+		super();
+        dpc(()=>{ this.main(); })
+	}
+
+	async main() {
+
+
+        cli.version(pkg.version,'-v, --version','outputs the current version')
+        cli.option('-f, --force',"force action");
+
+        let filename = path.join(process.cwd(),'emanate');
+        console.log(`processing '${filename}'`);
+        if(!fs.existsSync(filename)) {
+        	console.log("error - no 'emanate' file");
+        	return;
+        }
+
+        require.main.paths.unshift(path.join(process.cwd(),'node_modules'));
+		// console.log(require);
+
+    	//const script = new vm.Script(_module_.wrap(text))(, { filename })
+    	try {
+	    	let text = fs.readFileSync(filename).toString();
+
+	    	text = `(async ()=>{ ${text} })();`;
+//        let inst = require(filename);
+//	    	const script = new vm.Script(_module_.wrap(text), {filename})(exports, require, module, __filename, __dirname )
+	    	// const script = new vm.Script(text, {filename});
+
+	    	//console.log(filename);
+//	    	script.runInThisContext();
+			const sandbox = vm.createContext({process,console,cli},{ name : 'Emanator VM'});
+			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
+//			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
+			//require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, __filename, __dirname)
+			//var res = require('vm').runInThisContext(_module_.wrap(text),{filename})({ }, require, module, __filename, __dirname)
+			//console.log(module.exports)
+
+	//        const ctx = cli.parse(process.argv);
+
+
+	    } catch(ex) {
+	    	console.log(ex);
+	    	console.log(ex.stack);
+	    }
+
+	}
+}
+
+if(!global.Emanate) {
+	new Emanate();
+}

@@ -3,10 +3,27 @@
   "version": "0.0.1",
   "description": "NWJS Package Builder",
   "main": "emanator.js",
+  "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "emanate": "emanate"
+  },
+  "files": [
+    "lib",
+    "resources",
+    "templates",
+    "emanate",
+    "emanator.js",
+    "README.md"
+  ],
   "author": "ASPECTRON Inc.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lsi-soar/lsi-soar.git"
+  },
+
   "dependencies": {
     "adm-zip": "*",
     "bytenode": "*",
@@ -27,6 +44,8 @@
     "semver": "*",
     "through2": "*",
     "toposort-class": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "commander": "*",
+    "time-stamp" : "*"
   }
 }

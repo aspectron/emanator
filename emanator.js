@@ -13,14 +13,14 @@
 const PLATFORM = { win32 : 'windows', darwin : 'darwin', linux : 'linux' }[process.platform];
 
 let Platform = require('./lib/'+PLATFORM);
-let Util = require('./lib/util');
+let Utils = require('./lib/utils');
 
 class Emanator extends Platform {
-	constructor(appFolder, gulp, options) {
-		super(appFolder, gulp, options);
+	constructor(appFolder, options) {
+		super(appFolder, options);
 	}
 }
 
-Emanator.Util = Util;
+Emanator.Utils = Utils;
 
 module.exports = Emanator;
