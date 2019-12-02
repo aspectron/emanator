@@ -4,6 +4,8 @@ const fs = require('fs');
 const vm = require('vm');
 const events = require('events');
 const path = require('path');
+const colors = require('colors');
+const mkdirp = require('mkdirp');
 const cli = require('commander')
 const _module_ = require('module');
 
@@ -42,7 +44,7 @@ class Emanate extends events.EventEmitter {
 
 	    	//console.log(filename);
 //	    	script.runInThisContext();
-			const sandbox = vm.createContext({process,console,cli},{ name : 'Emanator VM'});
+			const sandbox = vm.createContext({process,console,cli,Emanator,fs,path,mkdirp,colors},{ name : 'Emanator VM'});
 			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
 //			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
 			//require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, __filename, __dirname)
