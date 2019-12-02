@@ -1,6 +1,6 @@
 {
   "name": "emanator",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "NWJS Package Builder",
   "main": "emanator.js",
   "preferGlobal": true,
@@ -45,6 +45,7 @@
     "toposort-class": "*",
     "underscore": "*",
     "commander": "*",
-    "time-stamp": "*"
+    "time-stamp": "*",
+    "bascii": "latest"
   }
 }
