@@ -23,7 +23,6 @@
     "type": "git",
     "url": "git+https://github.com/lsi-soar/lsi-soar.git"
   },
-
   "dependencies": {
     "adm-zip": "*",
     "bytenode": "*",
@@ -46,6 +45,6 @@
     "toposort-class": "*",
     "underscore": "*",
     "commander": "*",
-    "time-stamp" : "*"
+    "time-stamp": "*"
   }
 }
