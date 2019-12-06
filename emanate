@@ -1,44 +1,54 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const vm = require('vm');
 const events = require('events');
 const path = require('path');
 const colors = require('colors');
 const mkdirp = require('mkdirp');
-const cli = require('commander')
 const _module_ = require('module');
-const Utils = require('utils');
+
+const Utils = require('./lib/utils');
 
 const pkg = require('./package');
 const Emanator = require('./emanator');
 class Emanate extends events.EventEmitter {
 	constructor() {
 		super();
-		this.flags = 
+		this.utils = new Utils(this);
+		this.flags = this.utils.args();
         dpc(()=>{ this.main(); })
 	}
 
 	async main() {
 
-
-        cli.version(pkg.version,'-v, --version','outputs the current version')
-        cli.option('-f, --force',"force action");
+		if(this.flags.v || this.flags.version) {
+			console.log(`Emanator ${pkg.version}`);
+			return;
+		}
 
         let filename = path.join(process.cwd(),'emanate');
-        console.log(`processing '${filename}'`);
         if(!fs.existsSync(filename)) {
         	console.log("Error: no 'emanate' file found in the current folder.");
         	return;
         }
+        // console.log(`processing '${filename.bold}'`);
 
         require.main.paths.unshift(path.join(process.cwd(),'node_modules'));
 
     	try {
 	    	let text = fs.readFileSync(filename).toString();
-
-	    	text = `(async ()=>{ ${text} })();`;
-			const sandbox = vm.createContext({process,console,cli,Emanator,fs,path,mkdirp,colors},{ name : 'Emanator VM'});
+	    	
+	    	text = `(async ()=>{\n${text}\n})();`;
+			const sandbox = vm.createContext({
+				process,
+				console,
+				Emanator,
+				fs,
+				path,
+				mkdirp,
+				colors
+			},{ name : 'Emanator VM'});
 			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
 	    } catch(ex) {
 	    	console.log(ex);
