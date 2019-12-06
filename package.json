@@ -1,7 +1,7 @@
 {
   "name": "emanator",
-  "version": "0.1.0",
-  "description": "NWJS Package Builder",
+  "version": "0.2.0",
+  "description": "Multi-Purpose Software Deployment System",
   "main": "emanator.js",
   "preferGlobal": true,
   "scripts": {
@@ -21,12 +21,14 @@
   "author": "ASPECTRON Inc.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lsi-soar/lsi-soar.git"
+    "url": "git+https://github.com/aspectron/emanator.git"
   },
   "dependencies": {
     "adm-zip": "*",
+    "bascii": "latest",
     "bytenode": "*",
     "colors": "*",
+    "commander": "*",
     "ejs": "*",
     "fs-extra": "*",
     "graceful-fs": "*",
@@ -42,10 +44,8 @@
     "request-progress": "*",
     "semver": "*",
     "through2": "*",
-    "toposort-class": "*",
-    "underscore": "*",
-    "commander": "*",
     "time-stamp": "*",
-    "bascii": "latest"
+    "toposort-class": "*",
+    "underscore": "*"
   }
 }
