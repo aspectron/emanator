@@ -1,6 +1,6 @@
 {
   "name": "emanator",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Multi-Purpose Software Deployment System",
   "main": "emanator.js",
   "preferGlobal": true,
