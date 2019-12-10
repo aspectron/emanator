@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 const fs = require('fs-extra');
+const os = require('os');
 const vm = require('vm');
 const events = require('events');
 const path = require('path');
@@ -9,6 +10,7 @@ const mkdirp = require('mkdirp');
 const _module_ = require('module');
 
 const Utils = require('./lib/utils');
+const Git = require('./lib/tools/git');
 
 const pkg = require('./package');
 const Emanator = require('./emanator');
@@ -27,12 +29,41 @@ class Emanate extends events.EventEmitter {
 			return;
 		}
 
-        let filename = path.join(process.cwd(),'emanate');
-        if(!fs.existsSync(filename)) {
-        	console.log("Error: no 'emanate' file found in the current folder.");
-        	return;
-        }
-        // console.log(`processing '${filename.bold}'`);
+		const gitResolver = Git.Resolver(this);
+		const git = await gitResolver('N/A');
+
+		const args = process.argv.slice(2).join(' ');
+		let { base, organization, project } = this.utils.match(args,/(?<base>(git@|\w+@|https:\/\/)[\w-]+\.\w+[:\/])(?<organization>[\w]+)\/(?<project>[\w]+)(\.git)?/);
+		if(base && organization && project) {
+
+			const RELEASE = path.join(os.homedir(),'emanator');
+			const PROJECT = path.join(RELEASE,organization,project+'/');
+			const REPO = path.join(PROJECT,'repo');
+			mkdirp.sync(PROJECT);
+
+			await git.clone(`${base}${organization}/${project}`, PROJECT, 'repo');
+
+	        let filename = path.join(REPO,'emanate');
+			if(!fs.existsSync(filename)) {
+				console.log(`Unable to locate emanate file:`.red.bold,`${filename}`.bold);
+				process.exit(1);
+			}
+
+	        require.main.paths.unshift(path.join(REPO,'node_modules'));
+			this.emanate(filename);
+		}
+		else {
+	        let filename = path.join(process.cwd(),'emanate');
+	        if(!fs.existsSync(filename)) {
+	        	console.log("Error: no 'emanate' file found in the current folder.");
+	        	return;
+	        }
+	        this.emanate(filename);
+		}
+
+	}
+
+	async emanate(filename) {
 
         require.main.paths.unshift(path.join(process.cwd(),'node_modules'));
 
