@@ -41,7 +41,14 @@ class Emanate extends events.EventEmitter {
 			const REPO = path.join(PROJECT,'repo');
 			mkdirp.sync(PROJECT);
 
-			await git.clone(`${base}${organization}/${project}`, PROJECT, 'repo');
+			let url = `${base}${organization}/${project}`;
+			if(this.args['--no-ssh'] || this.args['--http'] || this.args['--https']) {
+				let { base, address, organization, project } = this.utils.match(url,/(?<base>(git@|\w+@|https:\/\/)(?<address>[\w-]+\.\w+)[:\/])(?<organization>[\w]+)\/(?<project>[\w]+)(\.git)?/);
+				if(base && address && organization && project) {
+					url = `https://${address}/${organization}/${project}`;
+				}
+			}
+			await git.clone(url, PROJECT, 'repo');
 
 	        let filename = path.join(REPO,'emanate');
 			if(!fs.existsSync(filename)) {
