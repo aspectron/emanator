@@ -42,7 +42,7 @@ class Emanate extends events.EventEmitter {
 			mkdirp.sync(PROJECT);
 
 			let url = `${base}${organization}/${project}`;
-			if(this.args['--no-ssh'] || this.args['--http'] || this.args['--https']) {
+			if(this.flags['--no-ssh'] || this.flags['--http'] || this.flags['--https']) {
 				let { base, address, organization, project } = this.utils.match(url,/(?<base>(git@|\w+@|https:\/\/)(?<address>[\w-]+\.\w+)[:\/])(?<organization>[\w]+)\/(?<project>[\w]+)(\.git)?/);
 				if(base && address && organization && project) {
 					url = `https://${address}/${organization}/${project}`;
@@ -67,17 +67,17 @@ class Emanate extends events.EventEmitter {
 	        }
 	        this.emanate(filename);
 		}
-
 	}
 
 	async emanate(filename) {
 
         require.main.paths.unshift(path.join(process.cwd(),'node_modules'));
 
-    	try {
+		try {
 	    	let text = fs.readFileSync(filename).toString();
 	    	
-	    	text = `(async ()=>{\n${text}\n})();`;
+			text = `(async ()=>{ (${__color_extend_string_prototype.toString()})();\n${text}\n})();`;
+			// console.log(text);
 			const sandbox = vm.createContext({
 				process,
 				console,
@@ -85,15 +85,85 @@ class Emanate extends events.EventEmitter {
 				fs,
 				path,
 				mkdirp,
-				colors
+				colors,
 			},{ name : 'Emanator VM'});
 			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
 	    } catch(ex) {
-	    	console.log(ex);
+	    	console.log(ex.toString().red);
 	    	console.log(ex.stack);
 	    }
-
 	}
+}
+
+function __color_extend_string_prototype() {
+	var addProperty = function(color, func) {
+		String.prototype.__defineGetter__(color, func);
+	};
+
+	addProperty('strip', function() { return colors.strip(this); });
+	addProperty('stripColors', function() { return colors.strip(this); });
+	
+	var x = Object.keys(colors.styles);
+	x.forEach(function(style) {
+		addProperty(style, function() {
+		return colors.stylize(this, style);
+		});
+	});
+	
+	function applyTheme(theme) {
+		var stringPrototypeBlacklist = [
+		'__defineGetter__', '__defineSetter__', '__lookupGetter__',
+		'__lookupSetter__', 'charAt', 'constructor', 'hasOwnProperty',
+		'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString',
+		'valueOf', 'charCodeAt', 'indexOf', 'lastIndexOf', 'length',
+		'localeCompare', 'match', 'repeat', 'replace', 'search', 'slice',
+		'split', 'substring', 'toLocaleLowerCase', 'toLocaleUpperCase',
+		'toLowerCase', 'toUpperCase', 'trim', 'trimLeft', 'trimRight',
+		];
+	
+		Object.keys(theme).forEach(function(prop) {
+			if (stringPrototypeBlacklist.indexOf(prop) !== -1) {
+				console.log('warn: '.red + ('String.prototype' + prop).magenta +
+				' is probably something you don\'t want to override.  ' +
+				'Ignoring style name');
+			} else {
+				if (typeof(theme[prop]) === 'string') {
+					colors[prop] = colors[theme[prop]];
+					addProperty(prop, function() {
+						return colors[prop](this);
+					});
+				} else {
+					var themePropApplicator = function(str) {
+						var ret = str || this;
+						for (var t = 0; t < theme[prop].length; t++) {
+						ret = colors[theme[prop][t]](ret);
+						}
+						return ret;
+					};
+					addProperty(prop, themePropApplicator);
+					colors[prop] = function(str) {
+						return themePropApplicator(str);
+					};
+				}
+			}
+		});
+	}
+	
+	colors.setTheme = function(theme) {
+		if (typeof theme === 'string') {
+		console.log('colors.setTheme now only accepts an object, not a string. ' +
+			'If you are trying to set a theme from a file, it is now your (the ' +
+			'caller\'s) responsibility to require the file.  The old syntax ' +
+			'looked like colors.setTheme(__dirname + ' +
+			'\'/../themes/generic-logging.js\'); The new syntax looks like '+
+			'colors.setTheme(require(__dirname + ' +
+			'\'/../themes/generic-logging.js\'));');
+		return;
+		} else {
+		applyTheme(theme);
+		}
+	};
+	  
 }
 
 if(!global.Emanate) {
