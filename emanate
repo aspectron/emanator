@@ -83,6 +83,7 @@ class Emanate extends events.EventEmitter {
 				console,
 				Emanator,
 				fs,
+				os,
 				path,
 				mkdirp,
 				colors,
