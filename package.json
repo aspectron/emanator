@@ -1,21 +1,23 @@
 {
   "name": "emanator",
-  "version": "0.3.9",
-  "description": "Multi-Purpose Software Deployment System",
+  "version": "0.3.10",
+  "description": "Multi-Purpose Software Deployment Framework",
   "main": "emanator.js",
   "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "emanate": "emanate"
+    "emanate": "emanate",
+    "emanator": "emanator"
   },
   "files": [
     "lib",
     "resources",
     "templates",
     "emanate",
-    "emanator.js",
+    "emanator",
+    "index.js",
     "README.md"
   ],
   "author": "ASPECTRON Inc.",
