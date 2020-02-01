@@ -1,0 +1,12 @@
+
+const Utils = require('./lib/utils');
+
+class Emanator {
+    constructor() {
+        this.utils = new Utils(this);
+
+        console.log('emanator management utility (todo)')
+    }
+}
+
+const emanator = new Emanator();
