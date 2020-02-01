@@ -7,6 +7,7 @@ const events = require('events');
 const path = require('path');
 const colors = require('colors');
 const mkdirp = require('mkdirp');
+const { exec, execSync } = require('child_process');
 const _module_ = require('module');
 
 const Utils = require('./lib/utils');
@@ -76,7 +77,7 @@ class Emanate extends events.EventEmitter {
 		try {
 	    	let text = fs.readFileSync(filename).toString();
 	    	
-			text = `(async ()=>{ (${__color_extend_string_prototype.toString()})();\n${text}\n})();`;
+			text = `(async ()=>{ (${__extend_prototypes.toString()})();\n${text}\n})();`;
 			// console.log(text);
 			const sandbox = vm.createContext({
 				process,
@@ -87,6 +88,8 @@ class Emanate extends events.EventEmitter {
 				path,
 				mkdirp,
 				colors,
+				setInterval,clearInterval,
+				setTimeout,clearTimeout,
 			},{ name : 'Emanator VM'});
 			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
 	    } catch(ex) {
@@ -96,7 +99,34 @@ class Emanate extends events.EventEmitter {
 	}
 }
 
-function __color_extend_string_prototype() {
+function __extend_prototypes() {
+
+
+	if(!Number.prototype.toFileSize) {
+		Object.defineProperty(Number.prototype, 'toFileSize', {
+			value: function(a, asNumber) {
+				var b,c,d;
+				var r = (
+					a=a?[1e3,'k','B']:[1024,'K','iB'],
+					b=Math,
+					c=b.log,
+					d=c(this)/c(a[0])|0,this/b.pow(a[0],d)
+				).toFixed(2)
+	
+				if(!asNumber) {
+					r += ' '+(d?(a[1]+'MGTPEZY')[--d]+a[2]:'Bytes');
+				}
+				return r;
+			},
+			writable:false,
+			enumerable:false
+		});
+	}
+	
+
+
+
+
 	var addProperty = function(color, func) {
 		String.prototype.__defineGetter__(color, func);
 	};

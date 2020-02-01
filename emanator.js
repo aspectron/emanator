@@ -22,5 +22,6 @@ class Emanator extends Platform {
 }
 
 Emanator.Utils = Utils;
+Emanator.utils = new Utils({});
 
 module.exports = Emanator;
