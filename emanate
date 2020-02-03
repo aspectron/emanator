@@ -7,7 +7,7 @@ const events = require('events');
 const path = require('path');
 const colors = require('colors');
 const mkdirp = require('mkdirp');
-const { exec, execSync } = require('child_process');
+const { exec, execSync, execFile, spawn } = require('child_process');
 const _module_ = require('module');
 
 const Utils = require('./lib/utils');
@@ -81,6 +81,7 @@ class Emanate extends events.EventEmitter {
 			text = `(async ()=>{ (${__extend_prototypes.toString()})();\n${text}\n})();`;
 			// console.log(text);
 			const sandbox = vm.createContext({
+				exec, execSync, execFile, spawn,
 				process,
 				console,
 				Emanator,
