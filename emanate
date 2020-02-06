@@ -104,6 +104,16 @@ class Emanate extends events.EventEmitter {
 function __extend_prototypes() {
 
 
+	if(!String.prototype.color) {
+		Object.defineProperty(String.prototype, 'color', {
+			value: function(c){
+				return `\x1b[38;5;${c}m${this}\x1b[0m`;
+			},
+			writable:false,
+			enumerable:false
+		});
+	}
+
 	if(!Number.prototype.toFileSize) {
 		Object.defineProperty(Number.prototype, 'toFileSize', {
 			value: function(a, asNumber) {
@@ -124,10 +134,6 @@ function __extend_prototypes() {
 			enumerable:false
 		});
 	}
-	
-
-
-
 
 	var addProperty = function(color, func) {
 		String.prototype.__defineGetter__(color, func);
