@@ -23,8 +23,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf64}\{#MyAppGroup}\{#MyAppName}
 DisableDirPage=yes
 UsePreviousAppDir=no
-OutputBaseFilename=<%- ident %>-windows-<%- package.version %><%= suffix %>
-OutputDir=..\..\setup
+OutputBaseFilename=<%- `${ident}-v${package.version}-${PLATFORM_ARCH}` %>
+OutputDir=<%- E.SETUP %>
 SetupIconFile=<%- path.join(RESOURCES,ident+'.ico') %>
 Compression=lzma/normal
 SolidCompression=yes
@@ -94,7 +94,7 @@ Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall
 
 [Files]
-Source: "..\build\*"; DestDir: {app}; Flags: recursesubdirs ignoreversion
+Source: <%- `"..\\build\\${ident}-v${package.version}-${PLATFORM_ARCH}\\*"` %>; DestDir: {app}; Flags: recursesubdirs ignoreversion
 <% if(options.dependent) { %>
 Source: "<%- options.dependent.file %>"; DestDir: {tmp}; 
 <% } %>
