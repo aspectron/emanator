@@ -1,12 +1,17 @@
+#! /usr/bin/env node
 
 const Utils = require('./lib/utils');
 
-class Emanator {
+class Manager {
     constructor() {
         this.utils = new Utils(this);
+        this.args = this.utils.args();
+        console.log('emanator management utility');
 
-        console.log('emanator management utility (todo)')
+        if(this.args.purge) {
+//            let folder = path.join(os.homedir(),'emanator')
+        }
     }
 }
 
-const emanator = new Emanator();
+const manager = new Manager();
