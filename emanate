@@ -52,16 +52,19 @@ class Emanate extends events.EventEmitter {
 			}
 			await git.clone(url, PROJECT, 'repo');
 	        let filename = this.getEmanateFile(REPO);
-	        if(!filename)
-	        	console.log("Error: 'emanate' or '.emanate' file found in the current folder.");
-
+	        if(!filename) {
+				console.log("Error: 'emanate' or '.emanate' file found in the current folder.".brightRed);
+				process.exit(1);
+			}
 	        require.main.paths.unshift(path.join(REPO,'node_modules'));
 			this.emanate(filename);
 		}
 		else {
 	        let filename = this.getEmanateFile(process.cwd());
-	        if(!filename)
-	        	console.log("Error: 'emanate' or '.emanate' file found in the current folder.");
+	        if(!filename) {
+				console.log("Error: 'emanate' or '.emanate' file found in the current folder.".brightRed);
+				process.exit(1);
+			}
 	        this.emanate(filename);
 		}
 	}
