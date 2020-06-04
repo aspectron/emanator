@@ -44,7 +44,7 @@ class Emanate extends events.EventEmitter {
 			mkdirp.sync(PROJECT);
 
 			let url = `${base}${organization}/${project}`;
-			if(this.flags['--no-ssh'] || this.flags['--http'] || this.flags['--https']) {
+			if(this.flags['no-ssh'] || this.flags['http'] || this.flags['https']) {
 				let { base, address, organization, project } = this.utils.match(url,/(?<base>(git@|\w+@|https:\/\/)(?<address>[\w-]+\.\w+)[:\/])(?<organization>[\w]+)\/(?<project>[\w]+)(\.git)?/);
 				if(base && address && organization && project) {
 					url = `https://${address}/${organization}/${project}`;
