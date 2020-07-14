@@ -40,6 +40,7 @@
     "time-stamp": "*",
     "toposort-class": "*",
     "underscore": "*",
-    "rss-parser": "*"
+    "rss-parser": "*",
+    "glob": "*"
   }
 }
