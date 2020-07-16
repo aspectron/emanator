@@ -16,7 +16,10 @@ let Platform = require('./lib/'+PLATFORM);
 let Utils = require('./lib/utils');
 
 class Emanator extends Platform {
-	constructor(appFolder, options) {
+	constructor(...args) {
+		let options = args.pop() || {};
+		let appFolder = args.pop() || process.cwd();
+	
 		super(appFolder, options);
 	}
 }
