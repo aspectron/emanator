@@ -102,7 +102,7 @@ class Emanate extends events.EventEmitter {
 				mkdirp,
 				colors,
 				setInterval,clearInterval,
-				setTimeout,clearTimeout,
+				setTimeout,clearTimeout,dpc
 			},{ name : 'Emanator VM'});
 			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
 	    } catch(ex) {
