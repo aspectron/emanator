@@ -11,7 +11,7 @@ const { exec, execSync, execFile, spawn } = require('child_process');
 const _module_ = require('module');
 
 const Utils = require('./lib/utils');
-const Git = require('./lib/tools/git');
+const Git = require('./lib/modules/git');
 
 
 const pkg = require('./package');
