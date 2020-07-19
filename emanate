@@ -70,16 +70,14 @@ class Emanate extends events.EventEmitter {
 	}
 
 	getEmanateFile(dir){
-		let filename = path.join(dir,'emanate');
-        if(!fs.existsSync(filename)){
-        	let file = path.join(dir,'.emanate');
-        	if(!fs.existsSync(file))
-        		return false;
-
-        	filename = file;
-        }
-
-        return filename;
+		let list = ['emanate','.emanate','EMANATE','.EMANATE','Emanate'];
+		while(list.length) {
+			let file = list.shift();
+			let filename = path.join(dir,file);
+			if(fs.existsSync(filename))
+				return filename;
+		}
+		return false;
 	}
 
 	async emanate(filename) {
