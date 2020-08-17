@@ -31,6 +31,38 @@ class Emanate extends events.EventEmitter {
 			return;
 		}
 
+		const serve_static = this.flags['serve-static'];
+		if(serve_static) {
+
+			const port = parseInt(this.flags.port) || 8080;
+			let address = this.flags.address || '127.0.0.1'; // 'localhost';
+			if(/^(\*|all)$/i.test(address))
+				address = '0.0.0.0';
+
+			let args = [];
+			if(typeof serve_static == 'string') {
+				if(!/^(\\|\/|~)/.test(string))
+					args.push(process.cwd());
+				args.push(serve_static);
+			}
+			else
+				args.push(process.cwd());
+			
+			const fastify = require('fastify')({ logger: true });
+			fastify.register(require('fastify-static'), {
+			  root: path.join(...args),
+			  // prefix: '/public/', // optional: default '/'
+			})
+			fastify.listen(port, function (err, address) {
+				if (err) {
+					fastify.log.error(err)
+					process.exit(1)
+				}
+				fastify.log.info(`server listening on ${address}`)
+			})			
+			return;
+		}
+
 		const gitResolver = Git.Resolver(this);
 		const git = await gitResolver('N/A');
 
