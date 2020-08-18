@@ -31,7 +31,7 @@ class Emanate extends events.EventEmitter {
 			return;
 		}
 
-		const serve_static = this.flags['serve-static'];
+		const serve_static = this.flags['serve'];
 		if(serve_static) {
 
 			const port = parseInt(this.flags.port) || 8080;
