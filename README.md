@@ -21,7 +21,7 @@
 
 ## Emanator Interface
 
-```
+```js
 const E = new Emanator(__dirname, {
 	type : 'NWJS',
 	guid : 'c5072045-6d98-44d8-9aa5-e9be6c79bd01',
