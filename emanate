@@ -7,7 +7,7 @@ const events = require('events');
 const path = require('path');
 const colors = require('colors');
 const mkdirp = require('mkdirp');
-const { exec, execSync, execFile, spawn } = require('child_process');
+const { exec, execSync, execFile, spawn : _spawn } = require('child_process');
 const _module_ = require('module');
 
 const Utils = require('./lib/utils');
@@ -21,6 +21,7 @@ class Emanate extends events.EventEmitter {
 		super();
 		this.utils = new Utils(this);
 		this.flags = this.utils.args();
+		this.argv = process.argv.slice(2);
         dpc(()=>{ this.main(); })
 	}
 
@@ -59,7 +60,7 @@ class Emanate extends events.EventEmitter {
 					process.exit(1)
 				}
 				fastify.log.info(`server listening on ${address}`)
-			})			
+			})
 			return;
 		}
 
@@ -122,7 +123,10 @@ class Emanate extends events.EventEmitter {
 			text = `(async ()=>{ (${__extend_prototypes.toString()})();\n${text}\n})();`;
 			// console.log(text);
 			const sandbox = vm.createContext({
-				exec, execSync, execFile, spawn,
+				exec, execSync, execFile, _spawn,
+				spawn : this.utils.spawn,
+				flags : this.flags,
+				argv : this.argv,
 				process,
 				console,
 				Emanator,
