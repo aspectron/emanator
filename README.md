@@ -28,15 +28,18 @@ Documentation on this site assumes that you are running under unix-compatible OS
 
 ### A barebone EMANATE script
 
-TODO
 
 ```js
 const E = new Emanator();
-const version = 'v14.8.8`;
-await E.download(`https://nodejs.org/dist/${version}/node-${version}-linux-x64.tar.xz`, E.TEMP);
-await E.copy('src-file','dest-file');
-
+const version = E.flags.version || 'v14.8.8`;
+const folder = `node-${version}-${E.PLATFORM_ARCH}`;
+const file = `${folder}.${E.NODE_ARCHIVE_EXTENSION}`;
+await E.download(`https://nodejs.org/dist/${version}/${file}`, E.TEMP);
+await E.decompress(path.join(E.TEMP,file), E.HOME);
+await E.spawn([`${path.join(E.HOME,folder,'bin',E.BINARY('node')}`,``],{ cwd });
 ```
+
+
 
 ## Emanator node_module handling
 
@@ -182,10 +185,52 @@ Emanator offers creation of multiple inter-dependent tasks that can be executed 
 
 ## Functions
 
-### `download()`
-### `extract()`
-### `spawn()`
+### `BINARY(filename)`
+
+Return Value:
+
+- Unix: returns `filename` unchanged
+- Windows: appends `.exe` to the filename
+
+### `download(url, folder)`
+
+Downloads a file at the destination URL to a folder.  Downloaded filename is derived from the URL.
+
+### `extract(from,to)`
+
+Extracts archive to the destination folder based on file extension.
+#### TAR files:
+Uses `tar` to extract. (Requires unix compatibility layer on Windows)
+
+#### ZIP files:
+- Windows: uses [AdmZip](https://www.npmjs.com/package/adm-zip) (no progress)
+- Unix: uses `unzip`
+
+### `spawn(command[, args][, options])`
+- command <string> The command to run.
+- args <string[]> List of string arguments.
+- options <Object>
+- Returns: Promise (child process termination)
+
+Spawns a child process. Returns a promise that will be resolved upon the child process termination. 
+
+This function is an async wrapper of the native Nodejs Child Process `spawn()` function with following differences:
+- `options` object can contain `stdout` property referencing a function that will receive process stdout output.
+
+
+- First element of the `arguments` parameter must be the porocess filename.
+
+Options:
+- `stdout` : 
+
+Example:
+```
+await E.spawn(['node','-v'])
+```
+
 ### `exec()`
+
+
 ### `copy()`
 ### `move()`
 ### `remove()`
