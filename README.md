@@ -178,6 +178,11 @@ Emanator offers creation of multiple inter-dependent tasks that can be executed 
 ### `BINARIES_ARCHIVE_EXTENSION`
 ### `NPM`
 
+### `HOME`
+### `NWJS_ARCHIVE_EXTENSION`
+### `NODE_ARCHIVE_EXTENSION`
+		
+
 ## Variables
 
 ### `flags`
