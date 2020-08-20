@@ -33,6 +33,7 @@ AlwaysShowComponentsList=False
 ShowComponentSizes=False
 RestartIfNeededByRun=False
 MinVersion=0,6.0
+;
 UserInfoPage=True
 DefaultGroupName=<%- group %>
 UninstallDisplayIcon={app}\<%- ident %>.exe
