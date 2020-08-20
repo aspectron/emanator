@@ -2,6 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "<%- title %>"
+#define MyAppGroup "<%- group %>"
 #define MyAppVersion "<%- package.version %>"
 #define MyAppPublisher "<%- author %>"
 #define MyAppURL "<%- url %>"
@@ -11,7 +12,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId=<%- guid %>
+AppId=95BA9908-FF97-4281-8DCA-7461BC9EE058
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -19,11 +20,11 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf64}\<%- group+'\\'+identUCFC %>
+DefaultDirName={pf64}\{#MyAppGroup}\{#MyAppName}
 DisableDirPage=yes
 UsePreviousAppDir=no
-OutputBaseFilename=<%- ident %>-windows-<%- package.version %><%= suffix %>
-OutputDir=..\release\setup
+OutputBaseFilename=<%- `${ident}-v${package.version}-${PLATFORM_ARCH}` %>
+OutputDir=<%- E.SETUP %>
 SetupIconFile=<%- path.join(RESOURCES,ident+'.ico') %>
 Compression=lzma/normal
 SolidCompression=yes
@@ -32,7 +33,8 @@ AlwaysShowComponentsList=False
 ShowComponentSizes=False
 RestartIfNeededByRun=False
 MinVersion=0,6.0
-UserInfoPage=False
+;
+UserInfoPage=True
 DefaultGroupName=<%- group %>
 UninstallDisplayIcon={app}\<%- ident %>.exe
 CloseApplications=force
@@ -43,7 +45,8 @@ ArchitecturesAllowed=x64
 ; done in "64-bit mode" on x64, meaning it should use the native
 ; 64-bit Program Files directory and the 64-bit view of the registry.
 ArchitecturesInstallIn64BitMode=x64
-WizardSmallImageFile=<%- path.join(RESOURCES,'setup-55x58.bmp') %>
+WizardImageFile=<%- path.join(RESOURCES,ident+'-164x314.bmp') %>
+WizardSmallImageFile=<%- path.join(RESOURCES,ident+'-55x58.bmp') %>
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -60,17 +63,69 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
-<% if(options.fw) { %>
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<%- title %>"" program=""{app}\{#MyAppExeName}"" dir=in action=allow enable=yes"; Flags: runhidden;
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<%- title %>"" program=""{app}\{#MyAppExeName}"" dir=out action=allow enable=yes"; Flags: runhidden;
-<% } %>
+<% 
+
+firewallRules.forEach((rule) => {
+  let name = null;
+  let file = null;
+
+  if(typeof rule == 'string') {
+    switch(rule.toLowerString()) {
+      case 'app': {
+        name = `${title} App`;
+        file = "{#MyAppExeName}";
+      } break;
+    }
+  } else {
+    name = rule.name;
+    file = rule.file;
+    if(rule.binary)
+      file = path.join('bin','windows-x64',file);
+  }
+%>
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<%- name %>"" program=""{app}\<%- file %>"" dir=in action=allow enable=yes"; Flags: runhidden;
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""<%- name %>"" program=""{app}\<%- file %>"" dir=out action=allow enable=yes"; Flags: runhidden;
+<%
+})
+%>
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall
 
 [Files]
-Source: "..\release\build\*"; DestDir: {app}; Flags: recursesubdirs ignoreversion
+Source: <%- `"..\\build\\${ident}-v${package.version}-${PLATFORM_ARCH}\\*"` %>; DestDir: {app}; Flags: recursesubdirs ignoreversion
+<% if(options.dependent) { %>
+Source: "<%- options.dependent.file %>"; DestDir: {tmp}; 
+<% } %>
 
 [InstallDelete]
 Type: filesandordirs; Name: "{app}"
+
+<% if(options.dependent) { %>
+[Code]
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var 
+   isDotNetInstalled : Boolean;
+   errorCode : Integer;
+   errorDesc : String;
+begin
+   isDotNetInstalled := IsDotNetIntalledCheck();
+   if not isDotNetInstalled then 
+   begin
+      //WizardForm.PreparingLabel.Caption := CustomMessage('InstallingDotNetMsg');
+      WizardForm.StatusLabel.Caption := CustomMessage('InstallingDotNetMsg');
+      ExtractTemporaryFile('dotNetFx40_Full_x86_x64.exe');
+      if  not ShellExec('',ExpandConstant('{tmp}\<%- options.dependent.file %>'),'/passive /norestart', '', SW_HIDE, ewWaitUntilTerminated, errorCode) then
+      begin
+        errorDesc := SysErrorMessage(errorCode);
+        MsgBox(errorDesc, mbError, MB_OK);
+      end; 
+;      isDotNetInstalled := WasDotNetInstallationSuccessful();
+;      if not isDotNetInstalled then
+;      begin
+;         Result := CustomMessage('FailedToInstalldotNetMsg');
+;      end;
+   end;
+end;
+<% } %>
 
 <% if(USE_RAR) { %>
 [Run]
@@ -80,4 +135,15 @@ Filename: "{app}\package.nw\lib.exe"; Parameters: "/s /y"; StatusMsg: "Installin
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\package.nw\node_modules"
 Type: filesandordirs; Name: "{app}\package.nw\lib"
+<% } %>
+
+[Registry]
+<% if(options.autostart == 'registry:user') { %>
+;current user only
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "<%- title %>"; ValueData: """{app}\<%- ident %>.exe"""; Flags: uninsdeletevalue
+<%
+} else  if(options.autostart == 'registry:everyone') { 
+%>
+;any user
+Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "<%- title %>"; ValueData: """{app}\<%- ident %>.exe"""; Flags: uninsdeletevalue
 <% } %>
