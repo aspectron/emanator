@@ -36,9 +36,9 @@ class Emanate extends events.EventEmitter {
 		if(serve_static) {
 
 			const port = parseInt(this.flags.port) || 8080;
-			let address = this.flags.address || '127.0.0.1'; // 'localhost';
-			if(/^(\*|all)$/i.test(address))
-				address = '0.0.0.0';
+			let host = this.flags.host || '127.0.0.1'; // 'localhost';
+			if(/^(\*|all)$/i.test(host))
+				host = '0.0.0.0';
 
 			let args = [];
 			if(typeof serve_static == 'string') {
@@ -54,7 +54,7 @@ class Emanate extends events.EventEmitter {
 			  root: path.join(...args),
 			  // prefix: '/public/', // optional: default '/'
 			})
-			fastify.listen(port, function (err, address) {
+			fastify.listen({port, host}, function (err, address) {
 				if (err) {
 					fastify.log.error(err)
 					process.exit(1)
