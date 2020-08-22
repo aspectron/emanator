@@ -64,30 +64,15 @@ Example: `emanate --optimize --version=1.5` will yield the following *flags* obj
 
 `argv` is an array of command-line arguments supplied to the Emanator when running emanate scripts.  For example: running `emanate build package` will yield *argv* as `['build','package']`
 
-### `exec(command[, options][, callback])`
+|Function|Description|
+|---|---|
+|`exec(command[, options][, callback])`|Imported from Nodejs `child_process` module.|
+|`execSync(command[, options])`|Imported from Nodejs `child_process` module.|
+|`execFile(file[, args][, options][, callback])`|Imported from Nodejs `child_process` module.|
+|`_spawn(command[, args][, options])`|Imported from Nodejs `child_process` module.|
+|`process`|Global Nodejs process object running Emanate script.|
+|`fs`|Global `fs` object is a composite of the Nodejs `fs` module as well as `fs-extra` module.  In addition to integrated `fs` module functions, `fs-extra` brings in the following methods: https://github.com/jprichardson/node-fs-extra#methods|
 
-Imported from Nodejs `child_process` module.
-
-### `execSync(command[, options])`
-
-Imported from Nodejs `child_process` module.
-
-### `execFile(file[, args][, options][, callback])`
-
-Imported from Nodejs `child_process` module.
-
-### `_spawn(command[, args][, options])`
-
-Imported from Nodejs `child_process` module.
-
-### `process`
-
-Global Nodejs process object running Emanate script.
-
-### `fs`
-
-Global `fs` object is a composite of the Nodejs `fs` module as well as `fs-extra` module.  In addition to integrated `fs` module functions, `fs-extra` brings in the following methods:
-https://github.com/jprichardson/node-fs-extra#methods
 
 ### `os`
 
