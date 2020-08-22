@@ -72,41 +72,14 @@ Example: `emanate --optimize --version=1.5` will yield the following *flags* obj
 |`_spawn(command[, args][, options])`|Imported from Nodejs `child_process` module.|
 |`process`|Global Nodejs process object running Emanate script.|
 |`fs`|Global `fs` object is a composite of the Nodejs `fs` module as well as `fs-extra` module.  In addition to integrated `fs` module functions, `fs-extra` brings in the following methods: https://github.com/jprichardson/node-fs-extra#methods|
-
-
-### `os`
-
-Nodejs `os` module
-
-### `path`
-
-Nodejs `path` module
-
-### `mkdirp`
-
-`mkdirp` module for recursive directory create
-
-### `colors`
-
-Emanator allows the use of ansi terminal colors via the `colors` module - https://github.com/Marak/colors.js
-
-### `setInterval`
-
-Javascript native function `setInterval()`.
-
-### `clearInterval`
-
-Javascript native function `clearInterval()`.
-
-### `setTimer`
-
-Javascript native function `setTimer()`.
-
-### `clearTimer`
-
-Javascript native function `clearTimer()`.
-
-
+|`os`|Nodejs `os` module|
+|`path`|Nodejs `path` module|
+|`mkdirp`|`mkdirp` module for recursive directory creation|
+|`colors`|Emanator allows the use of ansi terminal colors via the `colors` module - https://github.com/Marak/colors.js|
+|`setInterval`|Javascript native function `setInterval()`.|
+|`clearInterval`|Javascript native function `clearInterval()`.|
+|`setTimer`|Javascript native function `setTimer()`.|
+|`clearTimer`|Javascript native function `clearTimer()`.|
 
 ## Emanator Interface
 
