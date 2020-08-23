@@ -68,7 +68,6 @@ await E.spawn([`${path.join(E.HOME,folder,'bin',E.BINARY('node')}`,``],{ cwd });
 ```
 
 
-
 ## Emanator node_module handling
 
 When running Emanate scripts, Emanator adds a local `node_modules` folder as the first entry in the `require()` search path.  Subsequently, before performing a standard require() module search/resolution, modules will be searched for in a local `node_modules`.
@@ -139,22 +138,20 @@ const E = new Emanator(__dirname, {
  
 ### Option Object
 
-|Property|Description|
-|---|---|
-|`type`|should contain one of the following reserved project types: `NODE`, `NWJS`, `UTIL`, `DOC`; if used for utility purposes, can contain any user-defined type.|
-|`guid`|should contain a project GUID that will be used to identify the applicaton on Windows.  For example: `c5012045-6a98-44d8-9a85-e9be6379bd01`|
-|`group`|Windows *Start Menu* folder in which your application will reside|
-|`ident`|Application identifier `my-app`
-|`title`|'My App'|
-|`banner`|'my app'|
-|`git`|'git@github.com:my-org/my-app'|
-|`author`|"My Inc."|
-|`url`|http://my-site.com,
-|`archive`||
-|`production`||
-|`nwjs`| should contain required NWJS installer version. For example: ` nwjs : { version : '0.46.2', ffmpeg : true }`. If `ffmpeg` property is set to `true` Emanator will download and overwrite ffmpeg shared libraries included as a part of NWJS **with GPL-licensed ffmpeg libraries**.|
-|`resources`|should point to resource folder containing resources needed by Installers (images, icons etc)|
-|`manifest`|can be set to a custom function receiving and returning the project manifest data. The function has the following signature: `(manifest) => { return manifest; }`. This function is useful to modify project manifest (for example, include extra node module dependencies) during the build process.|
+-`type` should contain one of the following reserved project types: `NODE`, `NWJS`, `UTIL`, `DOC`; if used for utility purposes, can contain any user-defined type.
+- `guid` should contain a project GUID that will be used to identify the applicaton on Windows. For example: `c5012045-6a98-44d8-9a85-e9be6379bd01`
+- `group` Windows *Start Menu* folder in which your application will reside
+- `ident` Application identifier `my-app`
+- `title` 'My App'
+- `banner` 'my app'
+- `git` 'git@github.com:my-org/my-app'
+- `author` "My Inc."
+- `url` http://my-site.com,
+- `archive`
+- `production`
+- `nwjs` should contain required NWJS installer version. For example: ` nwjs : { version : '0.46.2', ffmpeg : true }`. If `ffmpeg` property is set to `true` Emanator will download and overwrite ffmpeg shared libraries included as a part of NWJS **with GPL-licensed ffmpeg libraries**.
+- `resources` should point to resource folder containing resources needed by Installers (images, icons etc)
+- `manifest` can be set to a custom function receiving and returning the project manifest data. The function has the following signature: `(manifest) => { return manifest; }`. This function is useful to modify project manifest (for example, include extra node module dependencies) during the build process.
 
 
 # Emanator task pipeline
@@ -173,31 +170,23 @@ Emanator offers creation of multiple inter-dependent tasks that can be executed 
 Read the project manifest file (`package.json`) synchronously, making the contents accessible as an object under `E.pkg` property. This is useful when contents of the `package.json` are required before execution of a pipeline.
 
 ## Constants
-|Constant|Description|
-|---|---|
-|`ident`|Project identifier (used in archive file and folder names)|
-|`type`|Project type. Currently used `NODE`,`NWJS`,`UTIL`|
-|`PROJECT_VERSION`|Version of the project used to initialize the Emanator object.|
-|`PLATFORM`|Target platform identifier: `windows`, `linux`, `darwin`|
-|`ARCH`|Target architexture identifier: `x64`, `arm7`|
-|`PLATFORM_ARCH`||
-|`BINARY_EXT`|Set to `'.exe'` on Windows, otherwise an empty string `''` |
-|`WINCMD_EXT`|Set to `'.cmd'` on Windows, otherwise an empty string `''`|
-|`PLATFORM_PATH_SEPARATOR`|Platform-specific path delimiter (`/` on Unix-compatible OS, '\' on Windows)|
-|`DMG_APP_NAME`||
-|`DMG_APP_NAME_ESCAPED`||
-|`NODE_VERSION`|Currently running Node version|
-|`NWJS_VERSION`|Project-configured NWJS version|
-|`NPM`|npm script location|
-|`HOME`|Absolute path to the current user home folder|
-|`NWJS_ARCHIVE_EXTENSION`|OS-specific archive extension used in NWJS releases|
-|`NODE_ARCHIVE_EXTENSION`|OS-specific archive extension used in Nodejs releases|
-		
-
-## Variables
-
-### `flags`
-### `argv`
+- `ident`- Project identifier (used in archive file and folder names)
+- `type`- Project type. Currently used `NODE`,`NWJS`,`UTIL`
+- `PROJECT_VERSION` - Version of the project used to initialize the Emanator object.
+- `PLATFORM`- Target platform identifier: `windows`, `linux`, `darwin`
+- `ARCH` - Target architexture identifier: `x64`, `arm7`
+- `PLATFORM_ARCH`
+- `BINARY_EXT` - Set to `'.exe'` on Windows, otherwise an empty string `''` 
+- `WINCMD_EXT` - Set to `'.cmd'` on Windows, otherwise an empty string `''`
+- `PLATFORM_PATH_SEPARATOR` - Platform-specific path delimiter (`/` on Unix-compatible OS, '\' on Windows)
+- `DMG_APP_NAME`
+- `DMG_APP_NAME_ESCAPED`
+- `NODE_VERSION` - Currently running Node version
+- `NWJS_VERSION` - Project-configured NWJS version
+- `NPM` - npm script location
+- `HOME` - Absolute path to the current user home folder
+- `NWJS_ARCHIVE_EXTENSION` - OS-specific archive extension used in NWJS releases
+- `NODE_ARCHIVE_EXTENSION` - OS-specific archive extension used in Nodejs releases
 
 ## Functions
 
@@ -240,7 +229,7 @@ Options:
 - `stdout` : 
 
 Example:
-```
+```js
 await E.spawn(['node','-v'])
 ```
 
