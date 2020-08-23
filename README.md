@@ -138,20 +138,20 @@ const E = new Emanator(__dirname, {
  
 ### Option Object
 
--`type` should contain one of the following reserved project types: `NODE`, `NWJS`, `UTIL`, `DOC`; if used for utility purposes, can contain any user-defined type.
-- `guid` should contain a project GUID that will be used to identify the applicaton on Windows. For example: `c5012045-6a98-44d8-9a85-e9be6379bd01`
-- `group` Windows *Start Menu* folder in which your application will reside
-- `ident` Application identifier `my-app`
-- `title` 'My App'
-- `banner` 'my app'
-- `git` 'git@github.com:my-org/my-app'
-- `author` "My Inc."
-- `url` http://my-site.com,
+- `type` - should contain one of the following reserved project types: `NODE`, `NWJS`, `UTIL`, `DOC`; if used for utility purposes, can contain any user-defined type.
+- `guid` - should contain a project GUID that will be used to identify the applicaton on Windows. For example: `c5012045-6a98-44d8-9a85-e9be6379bd01`
+- `group` - Windows *Start Menu* folder in which your application will reside
+- `ident` - Application identifier `my-app`
+- `title` - 'My App'
+- `banner` - 'my app'
+- `git` - 'git@github.com:my-org/my-app'
+- `author` - "My Inc."
+- `url` - http://my-site.com,
 - `archive`
 - `production`
-- `nwjs` should contain required NWJS installer version. For example: ` nwjs : { version : '0.46.2', ffmpeg : true }`. If `ffmpeg` property is set to `true` Emanator will download and overwrite ffmpeg shared libraries included as a part of NWJS **with GPL-licensed ffmpeg libraries**.
-- `resources` should point to resource folder containing resources needed by Installers (images, icons etc)
-- `manifest` can be set to a custom function receiving and returning the project manifest data. The function has the following signature: `(manifest) => { return manifest; }`. This function is useful to modify project manifest (for example, include extra node module dependencies) during the build process.
+- `nwjs` - should contain required NWJS installer version. For example: ` nwjs : { version : '0.46.2', ffmpeg : true }`. If `ffmpeg` property is set to `true` Emanator will download and overwrite ffmpeg shared libraries included as a part of NWJS **with GPL-licensed ffmpeg libraries**.
+- `resources` - should point to resource folder containing resources needed by Installers (images, icons etc)
+- `manifest` - can be set to a custom function receiving and returning the project manifest data. The function has the following signature: `(manifest) => { return manifest; }`. This function is useful to modify project manifest (for example, include extra node module dependencies) during the build process.
 
 
 # Emanator task pipeline
