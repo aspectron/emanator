@@ -140,11 +140,11 @@ const E = new Emanator(__dirname, {
 
 - `type` - should contain one of the following reserved project types: `NODE`, `NWJS`, `UTIL`, `DOC`; if used for utility purposes, can contain any user-defined type.
 - `guid` - should contain a project GUID that will be used to identify the applicaton on Windows. For example: `c5012045-6a98-44d8-9a85-e9be6379bd01`
-- `group` - Windows *Start Menu* folder in which your application will reside
+- `group` - `My Software Group` Windows *Start Menu* folder in which your application will reside
 - `ident` - Application identifier `my-app`
-- `title` - 'My App'
-- `banner` - 'my app'
-- `git` - 'git@github.com:my-org/my-app'
+- `title` - `My App Title`
+- `banner` - `my app banner` (ascii banner displayed at startup)
+- `git` - `git@github.com:my-org/my-app`
 - `author` - "My Inc."
 - `url` - http://my-site.com,
 - `archive`
