@@ -212,9 +212,9 @@ Uses `tar` to extract. (Requires unix compatibility layer on Windows)
 - Unix: uses `unzip`
 
 ### `spawn(command[, args][, options])`
-- command <string> The command to run.
-- args <string[]> List of string arguments.
-- options <Object>
+- command `<string>` The command to run.
+- args `<string[]>` List of string arguments.
+- options `<Object>`
 - Returns: Promise (child process termination)
 
 Spawns a child process. Returns a promise that will be resolved upon the child process termination. 
