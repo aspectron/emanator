@@ -1,20 +1,48 @@
 # EMANATOR
 
+Deploy your HTML5 web or desktop applications with ease.  Emanator can help you create custom project integration processes to deploy HTML5 web applications as well as standalone desktop applications using NWJS. 
+
+In addition to being an exceptionally useful tool for day-to-day utilities, emanator offers following application build targets:
+
+- Windows
+  - Portable `ZIP` archive (Nodejs)
+  - Portable `ZIP` archive (NWJS)
+  - [InnoSetup 6](https://jrsoftware.org/isdl.php) EXE installer (NWJS)
+
+- Linux
+  - Portable `ZIP` archive (Nodejs)
+  - Portable `ZIP` archive (NWJS)
+
+- Mac OS
+  - Portable `ZIP` archive (Nodejs)
+  - Portable `ZIP` archive (NWJS)
+  - DMG disk image installer
+
+Some of the key features of the Emanator include:
+
+- Task-driven approach to create sequential or parallel execution pipelines.
+- Async-oriented environment
+- Instant access to modules included with the Emanator (see below), while also being able to use local *node_modules* included within your project (if any)
+- Convenient shell access as well as utility functions allowing you to download, extract, compress and perform variety of other operations usually needed in build processes.
+
 ---
 
+## Installation
+
+Emanator requires minimum Nodejs 14. You can install emanator as follows:
+
+`npm install -g emanator`
 
 ## Command Line Flags
 
-
+- `--version` - Prints currently installed version of the emanator.
 - `--clean` - Erase temporary folders and cache before starting the build process
-- `--serve` - Starts HTTP server serving current folder as static files. When `--serve` is specified, you can use `--port=8080` to bind the server to a specific port (default `8080`) and `--address=*` to bind the server to all interfaces.
-
+- `--serve` - Starts HTTP server serving current folder as static files. When `--serve` is specified, you can use `--port=8080` to bind the server to a specific port (default `8080`) and `--host=*` (or `--host=0.0.0.0`) to bind the server to all interfaces.
 
 ### Windows-specific Flags
-- `--innosetup`
-- `--nopackage` 
-- `--sign`
-
+- `--innosetup` - build InnoSetup installer
+- `--nopackage` - skip archival process if forced in the Emanator constructor options
+- `--sign` - sign the InnoSetup installer with your PFK
 
 ## EMANATE Scripts
 
@@ -64,22 +92,26 @@ Example: `emanate --optimize --version=1.5` will yield the following *flags* obj
 
 `argv` is an array of command-line arguments supplied to the Emanator when running emanate scripts.  For example: running `emanate build package` will yield *argv* as `['build','package']`
 
-|Function|Description|
-|---|---|
-|`exec(command[, options][, callback])`|Imported from Nodejs `child_process` module.|
-|`execSync(command[, options])`|Imported from Nodejs `child_process` module.|
-|`execFile(file[, args][, options][, callback])`|Imported from Nodejs `child_process` module.|
-|`_spawn(command[, args][, options])`|Imported from Nodejs `child_process` module.|
-|`process`|Global Nodejs process object running Emanate script.|
-|`fs`|Global `fs` object is a composite of the Nodejs `fs` module as well as `fs-extra` module.  In addition to integrated `fs` module functions, `fs-extra` brings in the following methods: https://github.com/jprichardson/node-fs-extra#methods|
-|`os`|Nodejs `os` module|
-|`path`|Nodejs `path` module|
-|`mkdirp`|`mkdirp` module for recursive directory creation|
-|`colors`|Emanator allows the use of ansi terminal colors via the `colors` module - https://github.com/Marak/colors.js|
-|`setInterval`|Javascript native function `setInterval()`.|
-|`clearInterval`|Javascript native function `clearInterval()`.|
-|`setTimer`|Javascript native function `setTimer()`.|
-|`clearTimer`|Javascript native function `clearTimer()`.|
+### Native Nodejs Modules and Functions
+
+- `exec(command[, options][, callback])`
+- `execSync(command[, options])`
+- `execFile(file[, args][, options][, callback])`
+- `_spawn(command[, args][, options])` (alias for native `child_process.spawn()`)
+- `process`
+- `os`
+- `path`
+- `setInterval`
+- `clearInterval`
+- `setTimer`
+- `clearTimer`
+
+### Extended Nodejs Modules
+
+- `fs` - Global `fs` object is a composite of the Nodejs `fs` module as well as `fs-extra` module.  In addition to integrated `fs` module functions, `fs-extra` brings in the following methods: https://github.com/jprichardson/node-fs-extra#methods
+- `mkdirp` - `mkdirp` module for recursive directory create
+- `colors` - Emanator allows the use of ansi terminal colors via the `colors` module - https://github.com/Marak/colors.js
+
 
 ## Emanator Interface
 
@@ -105,6 +137,25 @@ const E = new Emanator(__dirname, {
 });
 ```
 
+### Option Object
+
+|Property|Description|
+|---|---|
+|`type`|should contain one of the following reserved project types: `NODE`, `NWJS`, `UTIL`, `DOC`; if used for utility purposes, can contain any user-defined type.|
+|`guid`|should contain a project GUID that will be used to identify the applicaton on Windows.  For example: `c5012045-6a98-44d8-9a85-e9be6379bd01`|
+|`group`|Windows *Start Menu* folder in which your application will reside|
+|`ident`|Application identifier `my-app`
+|`title`|'My App'|
+|`banner`|'my app'|
+|`git`|'git@github.com:my-org/my-app'|
+|`author`|"My Inc."|
+|`url`|http://my-site.com,
+|`archive`||
+|`production`||
+|`nwjs`| should contain required NWJS installer version. For example: ` nwjs : { version : '0.46.2', ffmpeg : true }`. If `ffmpeg` property is set to `true` Emanator will download and overwrite ffmpeg shared libraries included as a part of NWJS **with GPL-licensed ffmpeg libraries**.|
+|`resources`|should point to resource folder containing resources needed by Installers (images, icons etc)|
+|`manifest`|can be set to a custom function receiving and returning the project manifest data. The function has the following signature: `(manifest) => { return manifest; }`. This function is useful to modify project manifest (for example, include extra node module dependencies) during the build process.|
+
 
 # Emanator task pipeline
 
@@ -113,32 +164,34 @@ Emanator offers creation of multiple inter-dependent tasks that can be executed 
 ### `task(name, options[, dependencies])
 
 
+
+
 ## Control functions
 
 ## `manifest_read_sync()`
 
+Read the project manifest file (`package.json`) synchronously, making the contents accessible as an object under `E.pkg` property. This is useful when contents of the `package.json` are required before execution of a pipeline.
+
 ## Constants
-
-### `ident`
-### `type`
-### `PROJECT_VERSION`
-### `NODE_VERSION`
-### `PLATFORM`
-### `ARCH`
-### `PLATFORM_ARCH`
-### `BINARY_EXT`
-### `WINCMD_EXT`
-### `PLATFORM_PATH_SEPARATOR`
-### `DMG_APP_NAME`
-### `DMG_APP_NAME_ESCAPED`
-### `NODE_VERSION`
-### `NWJS_VERSION`
-### `BINARIES_ARCHIVE_EXTENSION`
-### `NPM`
-
-### `HOME`
-### `NWJS_ARCHIVE_EXTENSION`
-### `NODE_ARCHIVE_EXTENSION`
+|Constant|Description|
+|---|---|
+|`ident`|Project identifier (used in archive file and folder names)|
+|`type`|Project type. Currently used `NODE`,`NWJS`,`UTIL`|
+|`PROJECT_VERSION`|Version of the project used to initialize the Emanator object.|
+|`PLATFORM`|Target platform identifier: `windows`, `linux`, `darwin`|
+|`ARCH`|Target architexture identifier: `x64`, `arm7`|
+|`PLATFORM_ARCH`||
+|`BINARY_EXT`|Set to `'.exe'` on Windows, otherwise an empty string `''` |
+|`WINCMD_EXT`|Set to `'.cmd'` on Windows, otherwise an empty string `''`|
+|`PLATFORM_PATH_SEPARATOR`|Platform-specific path delimiter (`/` on Unix-compatible OS, '\' on Windows)|
+|`DMG_APP_NAME`||
+|`DMG_APP_NAME_ESCAPED`||
+|`NODE_VERSION`|Currently running Node version|
+|`NWJS_VERSION`|Project-configured NWJS version|
+|`NPM`|npm script location|
+|`HOME`|Absolute path to the current user home folder|
+|`NWJS_ARCHIVE_EXTENSION`|OS-specific archive extension used in NWJS releases|
+|`NODE_ARCHIVE_EXTENSION`|OS-specific archive extension used in Nodejs releases|
 		
 
 ## Variables
@@ -192,8 +245,6 @@ await E.spawn(['node','-v'])
 ```
 
 ### `exec()`
-
-
 ### `copy()`
 ### `move()`
 ### `remove()`
@@ -203,20 +254,17 @@ await E.spawn(['node','-v'])
 ### `addToPath()`
 
 ## Folders
-### ``
-### `RELEASE`
-### `TOOLS`
-### `DEPS`
-### `SETUP`
-### `ROOT`
-### `TEMP`
-### `DMG`
-### `REPO`
-### ``
-### ``
-### ``
-### ``
-### ``
+
+|Property|Description|
+|---|---|
+|`RELEASE`||
+|`TOOLS`||
+|`DEPS`||
+|`SETUP`||
+|`ROOT`||
+|`TEMP`||
+|`DMG`||
+|`REPO`||
 
 ## Nodejs Integration Pipeline
 - `init`
@@ -252,6 +300,7 @@ await E.spawn(['node','-v'])
 
 ## Modules
 ### `7z`
+Provides interface to the 7z archiver, provides functions for compression and decompression using 7z
 ### `ares`
 ### `docker`
 ### `gcc`
