@@ -136,7 +136,7 @@ const E = new Emanator(__dirname, {
 	}
 });
 ```
-
+ 
 ### Option Object
 
 |Property|Description|
