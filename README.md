@@ -170,21 +170,21 @@ Emanator offers creation of multiple inter-dependent tasks that can be executed 
 Read the project manifest file (`package.json`) synchronously, making the contents accessible as an object under `E.pkg` property. This is useful when contents of the `package.json` are required before execution of a pipeline.
 
 ## Constants
-- `ident`- Project identifier (used in archive file and folder names)
-- `type`- Project type. Currently used `NODE`,`NWJS`,`UTIL`
-- `PROJECT_VERSION` - Version of the project used to initialize the Emanator object.
-- `PLATFORM`- Target platform identifier: `windows`, `linux`, `darwin`
-- `ARCH` - Target architexture identifier: `x64`, `arm7`
+- `ident`- project identifier (used in archive file and folder names)
+- `type`- project type. Currently used `NODE`,`NWJS`,`UTIL`
+- `PROJECT_VERSION` - version of the project used to initialize the Emanator object.
+- `PLATFORM`- target platform identifier: `windows`, `linux`, `darwin`
+- `ARCH` - target architexture identifier: `x64`, `arm7`
 - `PLATFORM_ARCH`
-- `BINARY_EXT` - Set to `'.exe'` on Windows, otherwise an empty string `''` 
-- `WINCMD_EXT` - Set to `'.cmd'` on Windows, otherwise an empty string `''`
-- `PLATFORM_PATH_SEPARATOR` - Platform-specific path delimiter (`/` on Unix-compatible OS, '\' on Windows)
+- `BINARY_EXT` - set to `'.exe'` on Windows, otherwise an empty string `''` 
+- `WINCMD_EXT` - set to `'.cmd'` on Windows, otherwise an empty string `''`
+- `PLATFORM_PATH_SEPARATOR` - platform-specific path delimiter (`/` on Unix-compatible OS, '\' on Windows)
 - `DMG_APP_NAME`
 - `DMG_APP_NAME_ESCAPED`
-- `NODE_VERSION` - Currently running Node version
-- `NWJS_VERSION` - Project-configured NWJS version
+- `NODE_VERSION` - currently running Node version
+- `NWJS_VERSION` - project-configured NWJS version
 - `NPM` - npm script location
-- `HOME` - Absolute path to the current user home folder
+- `HOME` - absolute path to the current user home folder
 - `NWJS_ARCHIVE_EXTENSION` - OS-specific archive extension used in NWJS releases
 - `NODE_ARCHIVE_EXTENSION` - OS-specific archive extension used in Nodejs releases
 
@@ -233,27 +233,35 @@ Example:
 await E.spawn(['node','-v'])
 ```
 
-### `exec()`
-### `copy()`
-### `move()`
-### `remove()`
-### `emptyDir()`
-### `mkdirp()`
-### `ensureDir()`
-### `addToPath()`
+- `async exec(file[,arguments][,options])` - executes `file` with `arguments`, returns **stdout** captured from process execution
+- `async copy(source, destination,options)` - https://github.com/jprichardson/node-fs-extra/blob/HEAD/docs/copy.md
+- `async move(source, destination, options)` - moves file
+- `async remove()` - removes file or folder (recursively)
+- `async emptyDir()` - delete all directory contents - https://github.com/jprichardson/node-fs-extra/blob/HEAD/docs/emptyDir.md
+- `async mkdirp(path)` - creates folders in the supplied path
+- `async ensureDir()` - https://github.com/jprichardson/node-fs-extra/blob/HEAD/docs/ensureDir.md
+- `addToPath(path)` - add supplied `path` to the current `process.env.PATH` list.
+
 
 ## Folders
 
 |Property|Description|
 |---|---|
-|`RELEASE`||
-|`TOOLS`||
-|`DEPS`||
-|`SETUP`||
-|`ROOT`||
-|`TEMP`||
-|`DMG`||
-|`REPO`||
+|`RELEASE`|`<emanator>/<org>/`|
+|`TOOLS`|`<emanator>/tools/`|
+|`DEPS`|`<emanator>/deps/`|
+|`SETUP`|`<project>/setup/<platform>-<arch>`|
+|`ROOT`|comprised of `<emanator>/<org>/<project>` if git URL is configured, `<emanator>/<ident>` if not.|
+|`TEMP`|`<emanator>/<org>/temp/`|
+|`DMG`|`<emanator>/<org>/DMG/`|
+|`REPO`|default:`<project>` production:`<repo>`|
+
+- `<emanator>` - default location: `<home-folder>/emanator`
+- `<project>` - project root, location of the `EMANATE` file
+- `<org>` - organization, derived from the `git` property
+- `<ident>` - `ident` property supplied to the `Emanator()` constructor
+- `<platform>` - target platform name: `windows`, `linux`, `darwin`
+- `<arch>` - target architecture: `x64`, `arm7`
 
 ## Nodejs Integration Pipeline
 - `init`
