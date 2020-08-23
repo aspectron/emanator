@@ -42,7 +42,7 @@ class Emanate extends events.EventEmitter {
 
 			let args = [];
 			if(typeof serve_static == 'string') {
-				if(!/^(\\|\/|~)/.test(string))
+				if(!/^(\\|\/|~)/.test(serve_static))
 					args.push(process.cwd());
 				args.push(serve_static);
 			}
