@@ -161,7 +161,7 @@ const E = new Emanator(__dirname, {
 
 Emanator offers creation of multiple inter-dependent tasks that can be executed asynchronously if various integration stages are independent of one another.
 
-### `task(name, options[, dependencies])
+### `task(name, options[, dependencies])`
 
 
 
