@@ -59,7 +59,7 @@ Documentation on this site assumes that you are running under unix-compatible OS
 
 ```js
 const E = new Emanator();
-const version = E.flags.version || 'v14.8.8`;
+const version = E.flags.version || 'v14.8.8';
 const folder = `node-${version}-${E.PLATFORM_ARCH}`;
 const file = `${folder}.${E.NODE_ARCHIVE_EXTENSION}`;
 await E.download(`https://nodejs.org/dist/${version}/${file}`, E.TEMP);
