@@ -91,25 +91,28 @@ Example: `emanate --optimize --version=1.5` will yield the following *flags* obj
 
 `argv` is an array of command-line arguments supplied to the Emanator when running emanate scripts.  For example: running `emanate build package` will yield *argv* as `['build','package']`
 
-### Native Nodejs Modules and Functions
+### External Modules
+
+- `fs` - Global `fs` object is a composite of the Nodejs `fs` module as well as `fs-extra` module.  In addition to integrated `fs` module functions, `fs-extra` brings in the following methods: https://github.com/jprichardson/node-fs-extra#methods
+- `mkdirp` - `mkdirp` module for recursive directory create
+- `colors` - Emanator allows the use of ansi terminal colors via the `colors` module - https://github.com/Marak/colors.js
+
+### Native Modules
+
+- `process`
+- `os`
+- `path`
+
+### Native Functions
 
 - `exec(command[, options][, callback])`
 - `execSync(command[, options])`
 - `execFile(file[, args][, options][, callback])`
 - `_spawn(command[, args][, options])` (alias for native `child_process.spawn()`)
-- `process`
-- `os`
-- `path`
 - `setInterval`
 - `clearInterval`
 - `setTimer`
 - `clearTimer`
-
-### Extended Nodejs Modules
-
-- `fs` - Global `fs` object is a composite of the Nodejs `fs` module as well as `fs-extra` module.  In addition to integrated `fs` module functions, `fs-extra` brings in the following methods: https://github.com/jprichardson/node-fs-extra#methods
-- `mkdirp` - `mkdirp` module for recursive directory create
-- `colors` - Emanator allows the use of ansi terminal colors via the `colors` module - https://github.com/Marak/colors.js
 
 
 ## Emanator Interface
@@ -135,6 +138,8 @@ const E = new Emanator(__dirname, {
 	}
 });
 ```
+
+In most emanator scripts, Emanator class is instantiated as a capital letter `E`.
  
 ### Option Object
 
@@ -158,10 +163,21 @@ const E = new Emanator(__dirname, {
 
 Emanator offers creation of multiple inter-dependent tasks that can be executed asynchronously if various integration stages are independent of one another.
 
-### `task(name, options[, dependencies])`
+### `task(name [, dependencies], handler)`
+- `name` - task name
+- `[dependencies]` - an array of tasks that should be completed before this task starts
+- `handler` - a function that will be executed when dependent tasks are complete
 
+Declare a custom task.
 
+Task handler function can have one of the following signatures:
+- `Promise function()` you can return a promise that should be resolved upon task completion.
+- `void function(callback)` you can invoke the supplied callback, in which case you **must not return a promise**.
 
+### `run([name])`
+- `name` - task name
+
+Run a specific task with its dependencies.
 
 ## Control functions
 
