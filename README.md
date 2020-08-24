@@ -313,7 +313,20 @@ await E.spawn(['node','-v'])
 
 ## Modules
 ### `7z`
-Provides interface to the 7z archiver, provides functions for compression and decompression using 7z
+Provides interface to the 7z archiver - functions for compression and decompression using 7z
+- `exec7zArchive(folder, archive[, options])` - create 7z archive from a folder
+  - `folder` - source folder to archive from
+  - `archive` - archive filename
+  - `options` - Can contain following options: `level` compression level (must be a numeric value in range of `1..9`); `silent` set to true to enable running 7z in silent mode (`--bb0`).
+- `createSFX(options)` - create `.EXE` Self-extracting archive (SFX)
+  - `options` can contain the following properties:
+    - `script`
+    - `elevate`
+    - `title`
+    - `folder`
+    - `wait`
+    - `args`
+
 ### `ares`
 ### `docker`
 ### `gcc`
