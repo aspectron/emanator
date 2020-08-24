@@ -13,13 +13,13 @@ BLOCK "StringFileInfo"
 	BLOCK "040904b0"
 	{
 		VALUE "CompanyName", "<%- author %>.com"
-		VALUE "FileDescription", "<%- ident %>"
-		VALUE "InternalName", "<%- ident %>_exe"
+		VALUE "FileDescription", "<%- name %>"
+		VALUE "InternalName", "<%- name %>_exe"
 		VALUE "LegalCopyright", "<%- `Copyright ${(new Date()).getFullYear()} ${options.author}`  %>. All rights reserved."
-		VALUE "OriginalFilename", "<%- ident %>.exe"
-		VALUE "ProductName", "<%- ident %>"
+		VALUE "OriginalFilename", "<%- name %>.exe"
+		VALUE "ProductName", "<%- name %>"
 		VALUE "CompanyShortName", "<%- options.author %>"
-		VALUE "ProductShortName", "<%- ident %>"
+		VALUE "ProductShortName", "<%- name %>"
 		VALUE "LastChange", "f854061966c3acbf60eb0bbf02e93caa18652279"
 	}
 }

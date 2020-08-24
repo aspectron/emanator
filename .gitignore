@@ -2,4 +2,7 @@ node_modules
 *.sublime-project
 *.sublime-workspace
 package-lock.json
+*.code-workspace
+bin
+temp
 

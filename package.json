@@ -1,6 +1,6 @@
 {
   "name": "emanator",
-  "version": "0.4.17",
+  "version": "0.5.24",
   "description": "Multi-Purpose Software Deployment Framework",
   "main": "emanator.js",
   "preferGlobal": true,
@@ -30,25 +30,19 @@
     "bascii": "latest",
     "bytenode": "*",
     "colors": "*",
-    "commander": "*",
     "ejs": "*",
     "fs-extra": "*",
-    "graceful-fs": "*",
-    "gulp": "*",
-    "gulp-clean-css": "*",
-    "gulp-htmlmin": "*",
-    "gulp-minify-html": "*",
-    "gulp-util": "*",
     "is-root": "*",
     "mkdirp": "*",
-    "plugin-error": "*",
     "request": "*",
     "request-progress": "*",
     "semver": "*",
-    "through2": "*",
     "time-stamp": "*",
     "toposort-class": "*",
     "underscore": "*",
-    "rss-parser": "*"
+    "rss-parser": "*",
+    "glob": "*",
+    "fastify": "*",
+    "fastify-static": "*"
   }
 }

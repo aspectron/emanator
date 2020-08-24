@@ -7,11 +7,11 @@ const events = require('events');
 const path = require('path');
 const colors = require('colors');
 const mkdirp = require('mkdirp');
-const { exec, execSync, execFile, spawn } = require('child_process');
+const { exec, execSync, execFile, spawn : _spawn } = require('child_process');
 const _module_ = require('module');
 
 const Utils = require('./lib/utils');
-const Git = require('./lib/tools/git');
+const Git = require('./lib/modules/git');
 
 
 const pkg = require('./package');
@@ -21,6 +21,7 @@ class Emanate extends events.EventEmitter {
 		super();
 		this.utils = new Utils(this);
 		this.flags = this.utils.args();
+		this.argv = process.argv.slice(2);
         dpc(()=>{ this.main(); })
 	}
 
@@ -28,6 +29,38 @@ class Emanate extends events.EventEmitter {
 
 		if(this.flags.v || this.flags.version) {
 			console.log(`${pkg.version}`);
+			return;
+		}
+
+		const serve_static = this.flags['serve'];
+		if(serve_static) {
+
+			const port = parseInt(this.flags.port) || 8080;
+			let host = this.flags.host || '127.0.0.1'; // 'localhost';
+			if(/^(\*|all)$/i.test(host))
+				host = '0.0.0.0';
+
+			let args = [];
+			if(typeof serve_static == 'string') {
+				if(!/^(\\|\/|~)/.test(serve_static))
+					args.push(process.cwd());
+				args.push(serve_static);
+			}
+			else
+				args.push(process.cwd());
+			
+			const fastify = require('fastify')({ logger: true });
+			fastify.register(require('fastify-static'), {
+			  root: path.join(...args),
+			  // prefix: '/public/', // optional: default '/'
+			})
+			fastify.listen({port, host}, function (err, address) {
+				if (err) {
+					fastify.log.error(err)
+					process.exit(1)
+				}
+				fastify.log.info(`server listening on ${address}`)
+			})
 			return;
 		}
 
@@ -70,16 +103,14 @@ class Emanate extends events.EventEmitter {
 	}
 
 	getEmanateFile(dir){
-		let filename = path.join(dir,'emanate');
-        if(!fs.existsSync(filename)){
-        	let file = path.join(dir,'.emanate');
-        	if(!fs.existsSync(file))
-        		return false;
-
-        	filename = file;
-        }
-
-        return filename;
+		let list = ['emanate','.emanate','EMANATE','.EMANATE','Emanate'];
+		while(list.length) {
+			let file = list.shift();
+			let filename = path.join(dir,file);
+			if(fs.existsSync(filename))
+				return filename;
+		}
+		return false;
 	}
 
 	async emanate(filename) {
@@ -92,7 +123,10 @@ class Emanate extends events.EventEmitter {
 			text = `(async ()=>{ (${__extend_prototypes.toString()})();\n${text}\n})();`;
 			// console.log(text);
 			const sandbox = vm.createContext({
-				exec, execSync, execFile, spawn,
+				exec, execSync, execFile, _spawn,
+				spawn : this.utils.spawn,
+				flags : this.flags,
+				argv : this.argv,
 				process,
 				console,
 				Emanator,
@@ -102,7 +136,7 @@ class Emanate extends events.EventEmitter {
 				mkdirp,
 				colors,
 				setInterval,clearInterval,
-				setTimeout,clearTimeout,
+				setTimeout,clearTimeout,dpc
 			},{ name : 'Emanator VM'});
 			require('vm').runInContext(_module_.wrap(text),sandbox,{filename})({ }, require, module, filename, path.dirname(filename))
 	    } catch(ex) {
