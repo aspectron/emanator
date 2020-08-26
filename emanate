@@ -32,6 +32,11 @@ class Emanate extends events.EventEmitter {
 			return;
 		}
 
+		if(this.flags.location) {
+			console.log(`${__dirname}`);
+			return;
+		}
+
 		const serve_static = this.flags['serve'];
 		if(serve_static) {
 
