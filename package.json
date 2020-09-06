@@ -1,6 +1,6 @@
 {
   "name": "emanator",
-  "version": "0.5.25",
+  "version": "0.5.26",
   "description": "Multi-Purpose Software Deployment Framework",
   "main": "emanator.js",
   "preferGlobal": true,
@@ -43,6 +43,9 @@
     "rss-parser": "*",
     "glob": "*",
     "fastify": "*",
-    "fastify-static": "*"
+    "fastify-static": "*",
+    "acorn-loose": "*",
+    "acorn-walk": "*",
+    "escodegen": "*"
   }
 }

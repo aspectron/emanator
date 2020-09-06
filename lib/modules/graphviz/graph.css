@@ -1,0 +1,70 @@
+
+@font-face{
+    font-family: 'Open Sans';
+    src: url("open-sans.ttf") format('truetype');
+}
+
+html, body, #info {
+    font-family: 'Open Sans';
+    font-size: 16px;
+}
+
+
+
+svg {
+    height: 100%;
+    width: 100%;
+    font-family:"Open Sans";
+}
+
+#wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.node {
+    cursor: pointer;
+    font-family:"Open Sans";
+}
+
+
+#info {
+    position: absolute;
+    width: min-content;
+    height: min-content;
+    padding: 0px;
+    box-shadow: 0px 0px 92px rgba(0,0,0,0.25);
+    border: 1px solid #aaa;
+    background: white;
+    min-width: 480px;
+    min-height: 320px;
+    display:none;
+    font-size: 10px;
+/*    animation: all 0.25s;*/
+    transition: all 0.25s;    
+    flex-direction: column;
+    --flow-code-white-space:pre;
+    --flow-code-font-size:12px;
+    overflow:hidden;
+}
+#info flow-code{overflow:auto}
+
+flow-code {
+    position:relative;
+
+    font-size: 10px;
+    flex: 1;
+    width: 100%;
+    /*height: 100%;*/
+    /*display: block;*/
+}
+
+.node-info {
+    /*height: 80px;*/
+    border: 1px solid #ccc;
+    padding: 2px 2px;
+}
+
+a {
+    text-decoration:none;
+}
