@@ -1,7 +1,7 @@
 
 @font-face{
     font-family: 'Open Sans';
-    src: url("open-sans.ttf") format('truetype');
+    src: url("https://cdn.aspectron.com/resources/fonts/OpenSans/OpenSans-Regular.ttf") format('truetype');
 }
 
 html, body, #info {
