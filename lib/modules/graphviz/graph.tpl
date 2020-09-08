@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <head>    
-	<!--link rel="stylesheet" type="text/css" href="https://cdn.aspectron.com/latest/flow-ux-static/flow-ux/flow-ux.css" />
-	<script type="module" src="https://cdn.aspectron.com/latest/flow-ux-static/flow-ux/flow-ux.js"></script-->
+	<link rel="stylesheet" type="text/css" href="https://cdn.aspectron.com/latest/flow-ux-static/flow-ux/flow-ux.css" />
+	<script type="module" src="https://cdn.aspectron.com/latest/flow-ux-static/flow-ux/flow-ux.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="flow-ux-static-0.0.35/flow-ux/flow-ux.css" />
-	<script type="module" src="flow-ux-static-0.0.35/flow-ux/flow-ux.js"></script>
+	<!--link rel="stylesheet" type="text/css" href="flow-ux-static-0.0.35/flow-ux/flow-ux.css" />
+	<script type="module" src="flow-ux-static-0.0.35/flow-ux/flow-ux.js"></script-->
             
     <link rel="stylesheet" type="text/css" href="graph.css" />
 
