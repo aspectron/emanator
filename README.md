@@ -31,7 +31,18 @@ Some of the key features of the Emanator include:
 
 Emanator requires minimum Nodejs 14. You can install emanator as follows:
 
+Via NPM:
 `npm install -g emanator`
+
+Via Github:
+```
+git clone https://github.com/aspectron/emanator
+cd emanator
+npm link
+```
+
+Installing via Github allows you to stay on top of latest changes in the master branch.
+
 
 ## Command Line Flags
 
