@@ -1,8 +1,8 @@
 {
   "name": "emanator",
-  "version": "0.5.30",
-  "description": "Multi-Purpose Software Deployment Framework",
-  "main": "emanator.js",
+  "version": "0.5.34",
+  "description": "Multi-Purpose Software Integration Framework",
+  "main": "index.js",
   "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
