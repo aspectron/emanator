@@ -34,7 +34,7 @@ ShowComponentSizes=False
 RestartIfNeededByRun=False
 MinVersion=0,6.0
 ;
-UserInfoPage=True
+UserInfoPage=False
 DefaultGroupName=<%- group %>
 UninstallDisplayIcon={app}\<%- ident %>.exe
 CloseApplications=force
