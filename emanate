@@ -120,12 +120,14 @@ class Emanate extends events.EventEmitter {
 
 	async emanate(filename) {
 
+//        require.main.paths.unshift(process.cwd());
+        //require.main.paths.unshift(path.join(process.cwd(),'..'));
         require.main.paths.unshift(path.join(process.cwd(),'node_modules'));
-
+//console.log("require:",require.main.paths);
 		try {
 	    	let text = fs.readFileSync(filename).toString();
 	    	
-			text = `(async ()=>{ (${__extend_prototypes.toString()})();\n${text}\n})();`;
+			text = `(async ()=>{ (${__extend_prototypes.toString().replace(/\n/g,' ')})();${text}\n})();`;
 			// console.log(text);
 			const sandbox = vm.createContext({
 				exec, execSync, execFile, _spawn,
@@ -173,7 +175,7 @@ function __extend_prototypes() {
 					b=Math,
 					c=b.log,
 					d=c(this)/c(a[0])|0,this/b.pow(a[0],d)
-				).toFixed(2)
+				).toFixed(2);
 	
 				if(!asNumber) {
 					r += ' '+(d?(a[1]+'MGTPEZY')[--d]+a[2]:'Bytes');
