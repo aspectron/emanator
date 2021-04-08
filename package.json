@@ -1,6 +1,6 @@
 {
   "name": "emanator",
-  "version": "0.5.40",
+  "version": "0.5.41",
   "description": "Multi-Purpose Software Integration Framework",
   "main": "index.js",
   "preferGlobal": true,
@@ -26,26 +26,26 @@
     "url": "git+https://github.com/aspectron/emanator.git"
   },
   "dependencies": {
+    "acorn-loose": "*",
+    "acorn-walk": "*",
     "adm-zip": "*",
     "bascii": "latest",
     "bytenode": "*",
     "colors": "*",
     "ejs": "*",
+    "escodegen": "*",
+    "fastify": "*",
+    "fastify-static": "*",
     "fs-extra": "*",
-    "is-root": "*",
+    "glob": "*",
+    "is-root": "^2.1.0",
     "mkdirp": "*",
     "request": "*",
     "request-progress": "*",
+    "rss-parser": "*",
     "semver": "*",
     "time-stamp": "*",
     "toposort-class": "*",
-    "underscore": "*",
-    "rss-parser": "*",
-    "glob": "*",
-    "fastify": "*",
-    "fastify-static": "*",
-    "acorn-loose": "*",
-    "acorn-walk": "*",
-    "escodegen": "*"
+    "underscore": "*"
   }
 }
