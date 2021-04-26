@@ -38,7 +38,7 @@
     "fastify-static": "*",
     "fs-extra": "*",
     "glob": "*",
-    "is-root": "^2.1.0",
+    "is-root": "2.1.0",
     "mkdirp": "*",
     "request": "*",
     "request-progress": "*",
