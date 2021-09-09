@@ -1,6 +1,6 @@
 {
   "name": "emanator",
-  "version": "0.5.41",
+  "version": "0.5.42",
   "description": "Multi-Purpose Software Integration Framework",
   "main": "index.js",
   "preferGlobal": true,
