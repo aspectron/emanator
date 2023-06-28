@@ -6,7 +6,7 @@ const vm = require('vm');
 const events = require('events');
 const path = require('path');
 const colors = require('colors');
-const mkdirp = require('mkdirp');
+const { mkdirp } = require('mkdirp');
 const { exec, execSync, execFile, spawn : _spawn } = require('child_process');
 const _module_ = require('module');
 
